@@ -11,18 +11,17 @@
   </div>
      <div class="mt-5">
      <ul>
-        <li class="p-2" v-for="movie in searchedContents" :key="movie.id">
+        <li class="p-2" v-for="movie in searchedMovies" :key="movie.id">
           <strong>Title: {{ movie.title }}</strong>
           <ul>
             <li><strong>Original title:</strong> {{ movie.original_title }}</li>
              <li>
-              Lingua originale
+              Lingua originale:
               {{ movie.original_language }}
               <img
                 v-if="
                   movie.original_language === 'en' ||
-                  movie.original_language === 'it' ||
-                  movie.orginal_language !== 'en'& 'it'
+                  movie.original_language === 'it'
                 "
                 :src="require(`./assets/flags/${movie.original_language}.png`)"
                 alt="Country"
@@ -46,7 +45,8 @@ export default {
       searchQuery: "",
       baseUri:"https://api.themoviedb.org/3",
       apiKey: "ef9005034e403e3d4179e8aa9211d0a3",
-      searchedContents: []
+      searchedMovies: [],
+      searchedSeries: []
     }
   },
   methods:{
@@ -55,9 +55,14 @@ export default {
 
       axios.get(`${this.baseUri}/search/movie/?api_key=${this.apiKey}&query=${this.searchQuery}`)
       .then((res) => {
-        this.searchedContents = res.data.results;
+        this.searchedMovies = res.data.results;
         
-      })
+      });
+
+      axios.get(`${this.baseUri}/search/tv/?api_key=${this.apiKey}&query=${this.searchQuery}`)
+      .then((res) => {
+        this.searchedSeries = res.data.results;
+      } );
       
       this.searchQuery = "";
     }
