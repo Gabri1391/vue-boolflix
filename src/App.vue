@@ -15,7 +15,19 @@
           <strong>Title: {{ movie.title }}</strong>
           <ul>
             <li><strong>Original title:</strong> {{ movie.original_title }}</li>
-            <li><strong>Language:</strong><img src="./assets/flags/en.png" alt="Country"></li>
+             <li>
+              Lingua originale
+              {{ movie.original_language }}
+              <img
+                v-if="
+                  movie.original_language === 'en' ||
+                  movie.original_language === 'it' ||
+                  movie.orginal_language !== 'en'& 'it'
+                "
+                :src="require(`./assets/flags/${movie.original_language}.png`)"
+                alt="Country"
+              />
+            </li>
             <li><strong>Vote:</strong> {{ movie.vote_average }}</li>
           </ul>
         </li>
