@@ -15,7 +15,7 @@
           <strong>Title: {{ movie.title }}</strong>
           <ul>
             <li><strong>Original title:</strong> {{ movie.original_title }}</li>
-            <li><strong>Language:</strong>{{ movie.original_language }}</li>
+            <li><strong>Language:</strong><img src="./assets/flags/en.png" alt="Country"></li>
             <li><strong>Vote:</strong> {{ movie.vote_average }}</li>
           </ul>
         </li>
@@ -55,5 +55,10 @@ export default {
 
 <style lang="scss">
 @import './assets/scss/style.scss';
+
+img{
+  width: 30px;
+  padding: 5px;
+}
 
 </style>
