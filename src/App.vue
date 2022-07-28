@@ -5,13 +5,13 @@
       BOOLFLIX
      </div>
      <div>
-      <input type="text" v-model="searchQuery" placeholder="Insert a keyword...">
+      <input type="text" @keyup.enter="callApi" v-model="searchQuery" placeholder="Insert a keyword...">
      <button @click="callApi" class="btn">SEARCH</button>
      </div>
   </div>
   <!-- Movies -->
      <div class="mt-5">
-      <h1>Movies</h1>
+      <h1 class="ps-5 pb-2" v-show="isActive">Movies</h1>
      <ul>
         <li class="p-2" v-for="movie in searchedMovies" :key="movie.id">
           <strong>Title: {{ movie.title }}</strong>
@@ -35,12 +35,12 @@
      </ul>
      </div>
      <!-- TVseries -->
-     <h1>TVSeries</h1>
+     <h1 class="ps-5 pb-2" v-show="isActive">TVSeries</h1>
      <ul>
-        <li v-for="TVSerie in searchedTV" :key="TVSerie.id">
+        <li class="p-2" v-for="TVSerie in searchedTV" :key="TVSerie.id">
           <strong>{{ TVSerie.name }}</strong>
           <ul>
-            <li class="p-2">Original titke: {{ TVSerie.original_name }}</li>
+            <li>Original titke: {{ TVSerie.original_name }}</li>
             <li>
               Language:
               {{ TVSerie.original_language }}
@@ -75,7 +75,8 @@ export default {
       baseUri:"https://api.themoviedb.org/3",
       apiKey: "ef9005034e403e3d4179e8aa9211d0a3",
       searchedMovies: [],
-      searchedTV: []
+      searchedTV: [],
+      isActive: false
     }
   },
   methods:{
@@ -85,12 +86,14 @@ export default {
       axios.get(`${this.baseUri}/search/movie/?api_key=${this.apiKey}&query=${this.searchQuery}`)
       .then((res) => {
         this.searchedMovies = res.data.results;
+         this.isActive = true;
         
       });
 
       axios.get(`${this.baseUri}/search/tv/?api_key=${this.apiKey}&query=${this.searchQuery}`)
       .then((res) => {
         this.searchedTV = res.data.results;
+         this.isActive = true;
       } );
       
       this.searchQuery = "";
