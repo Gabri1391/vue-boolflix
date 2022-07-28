@@ -9,7 +9,9 @@
      <button @click="callApi" class="btn">SEARCH</button>
      </div>
   </div>
+  <!-- Movies -->
      <div class="mt-5">
+      <h1>Movies</h1>
      <ul>
         <li class="p-2" v-for="movie in searchedMovies" :key="movie.id">
           <strong>Title: {{ movie.title }}</strong>
@@ -32,6 +34,33 @@
         </li>
      </ul>
      </div>
+     <!-- TVseries -->
+     <h1>TVSeries</h1>
+     <ul>
+        <li v-for="TVSerie in searchedTV" :key="TVSerie.id">
+          <strong>{{ TVSerie.name }}</strong>
+          <ul>
+            <li class="p-2">Original titke: {{ TVSerie.original_name }}</li>
+            <li>
+              Language:
+              {{ TVSerie.original_language }}
+              <img
+                v-if="
+                  TVSerie.original_language === 'en' ||
+                  TVSerie.original_language === 'it'
+                "
+                :src="
+                  require(`./assets/flags/${TVSerie.original_language}.png`)
+                "
+                :alt="TVSerie.original_language"
+              />
+            </li>
+            <li>Vote: {{ TVSerie.vote_average }}</li>
+          </ul>
+        </li>
+      </ul>
+     
+
  </div>
 </template>
 
@@ -46,7 +75,7 @@ export default {
       baseUri:"https://api.themoviedb.org/3",
       apiKey: "ef9005034e403e3d4179e8aa9211d0a3",
       searchedMovies: [],
-      searchedSeries: []
+      searchedTV: []
     }
   },
   methods:{
@@ -61,7 +90,7 @@ export default {
 
       axios.get(`${this.baseUri}/search/tv/?api_key=${this.apiKey}&query=${this.searchQuery}`)
       .then((res) => {
-        this.searchedSeries = res.data.results;
+        this.searchedTV = res.data.results;
       } );
       
       this.searchQuery = "";
