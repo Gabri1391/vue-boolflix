@@ -19,10 +19,9 @@
       <h1 class="ps-5 pb-2 text-danger fw-bold" v-show="isActive">Movies</h1>
       <ul class="row ps-4">
         <li
-          class="p-3 col-12 col-md-4 col-lg-3"
+          class="p-3 col-12 col-md-4 col-lg-3 main-side"
           v-for="movie in searchedMovies"
           :key="movie.id"
-          @click="layout = 'overwiew'"
         >
           <div>
             <strong> {{ movie.title }}</strong>
@@ -32,7 +31,7 @@
             :src="`https://image.tmdb.org/t/p/w342/${movie.poster_path}`"
             :alt="`${movie.title}`"
           />
-          <ul v-if="layout === 'overwiew'">
+          <ul class="overview bg-black text-white">
             <li><strong>Original title:</strong> {{ movie.original_title }}</li>
             <li>
               <strong>Lingua originale:</strong>
@@ -56,6 +55,9 @@
                   'text-warning': i < Math.ceil(movie.vote_average / 2),
                 }"
               ></i>
+            </li>
+            <li class="pt-1 plot">
+              <strong>Plot: {{ movie.overview }}</strong>
             </li>
           </ul>
         </li>
@@ -110,7 +112,6 @@ export default {
       searchedTV: [],
       isActive: false,
       stars: 5,
-      layout: "main",
     };
   },
   methods: {
@@ -137,6 +138,9 @@ export default {
 
       this.searchQuery = "";
     },
+    toggleOverwiew() {
+      this.isOn = !this.isOn;
+    },
   },
 };
 </script>
@@ -159,5 +163,30 @@ header {
 }
 .cover {
   width: 200px;
+}
+
+.main-side {
+  position: relative;
+
+  &:hover {
+    .overview {
+      display: block;
+      position: absolute;
+      top: 40px;
+      left: 15px;
+      transition: 2s linear;
+      width: 200px;
+      overflow: auto;
+      transition: all 0.8s;
+      opacity: 80%;
+
+      .plot {
+        font-size: 14px;
+      }
+    }
+  }
+  .overview {
+    display: none;
+  }
 }
 </style>
