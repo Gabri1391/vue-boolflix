@@ -1,31 +1,38 @@
 <template>
+  <!-- Header -->
   <div>
-    <div class="container my-5 d-flex justify-content-between align-center">
-      <div class="logo">BOOLFLIX</div>
-      <div>
+    <header class="d-flex justify-content-between align-center">
+      <div class="logo ps-5 text-danger fw-bold">BOOLFLIX</div>
+      <div class="p-5">
         <input
+          class="mt-5"
           type="text"
           @keyup.enter="callApi"
           v-model="searchQuery"
           placeholder="Insert a keyword..."
         />
-        <button @click="callApi" class="btn">SEARCH</button>
+        <button @click="callApi" class="bg-secondary text-white mt-5">SEARCH</button>
       </div>
-    </div>
+    </header>
     <!-- Movies -->
     <div class="mt-5">
-      <h1 class="ps-5 pb-2" v-show="isActive">Movies</h1>
-      <ul>
-        <li class="p-2" v-for="movie in searchedMovies" :key="movie.id">
+      <h1 class="ps-5 pb-2 text-danger fw-bold" v-show="isActive">Movies</h1>
+      <ul class="row ps-4">
+        <li
+          class="p-3 col-12 col-md-4 col-lg-3"
+          v-for="movie in searchedMovies"
+          :key="movie.id"
+          @click="layout = 'overwiew'"
+        >
           <div>
-            <strong>Title: {{ movie.title }}</strong>
+            <strong> {{ movie.title }}</strong>
           </div>
           <img
             class="cover"
             :src="`https://image.tmdb.org/t/p/w342/${movie.poster_path}`"
             :alt="`${movie.title}`"
           />
-          <ul>
+          <ul v-if="layout === 'overwiew'">
             <li><strong>Original title:</strong> {{ movie.original_title }}</li>
             <li>
               <strong>Lingua originale:</strong>
@@ -55,7 +62,7 @@
       </ul>
     </div>
     <!-- TVseries -->
-    <h1 class="ps-5 pb-2" v-show="isActive">TVSeries</h1>
+    <h1 class="ps-5 pb-2 text-danger fw-bold" v-show="isActive">TVSeries</h1>
     <ul>
       <li class="p-2" v-for="TVSerie in searchedTV" :key="TVSerie.id">
         <div>
@@ -103,6 +110,7 @@ export default {
       searchedTV: [],
       isActive: false,
       stars: 5,
+      layout: "main",
     };
   },
   methods: {
@@ -135,12 +143,21 @@ export default {
 
 <style lang="scss">
 @import "./assets/scss/style.scss";
+header {
+  height: 150px;
+  background-color: black;
+
+  .logo {
+    font-size: 2rem;
+    line-height: 150px;
+  }
+}
 
 .country-flag {
   width: 30px;
   padding: 5px;
 }
 .cover {
-  width: 100px;
+  width: 200px;
 }
 </style>
