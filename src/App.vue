@@ -34,7 +34,7 @@
           <ul class="overview bg-black text-white">
             <li><strong>Original title:</strong> {{ movie.original_title }}</li>
             <li>
-              <strong>Lingua originale:</strong>
+              <strong>Original language:</strong>
               {{ movie.original_language }}
               <img
                 class="country-flag"
@@ -65,8 +65,12 @@
     </div>
     <!-- TVseries -->
     <h1 class="ps-5 pb-2 text-danger fw-bold" v-show="isActive">TVSeries</h1>
-    <ul>
-      <li class="p-2" v-for="TVSerie in searchedTV" :key="TVSerie.id">
+    <ul class="row ps-4">
+      <li
+        class="p-3 col-12 col-md-4 col-lg-3 main-side"
+        v-for="TVSerie in searchedTV"
+        :key="TVSerie.id"
+      >
         <div>
           <strong>Title: {{ TVSerie.name }}</strong>
         </div>
@@ -80,7 +84,7 @@
             <strong> title: {{ TVSerie.original_name }}</strong>
           </li>
           <li>
-            <strong>Language:</strong>
+            <strong>Original language:</strong>
             {{ TVSerie.original_language }}
             <img
               class="country-flag"
@@ -92,6 +96,17 @@
             />
           </li>
           <li><strong>Vote:</strong></li>
+          <i
+            v-for="(star, i) in 5"
+            :key="star.id"
+            class="bi bi-star-fill"
+            :class="{
+              'text-warning': i < Math.ceil(movie.vote_average / 2),
+            }"
+          ></i>
+          <li class="pt-1 plot">
+            <strong>Plot: {{ movie.overview }}</strong>
+          </li>
         </ul>
       </li>
     </ul>
@@ -99,6 +114,8 @@
 </template>
 
 <script>
+const coverPlaceholder =
+  "https://www.ordingbo.it/wp-content/plugins/lightbox/images/No-image-found.jpg";
 import axios from "axios";
 
 export default {
@@ -113,6 +130,12 @@ export default {
       isActive: false,
       stars: 5,
     };
+  },
+  computed: {
+    cover() {
+      if (!this.movie.poster_path) return coverPlaceholder;
+      else return this.movie.poster_path;
+    },
   },
   methods: {
     callApi() {
@@ -137,9 +160,6 @@ export default {
         });
 
       this.searchQuery = "";
-    },
-    toggleOverwiew() {
-      this.isOn = !this.isOn;
     },
   },
 };
